@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎾 CourtVision AI Pro</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --green:#4ade80;--yellow:#fde047;--orange:#fb923c;--red:#f87171;--blue:#60a5fa;--purple:#c084fc;
+  --bg1:#0f2027;--bg2:#203a43;--bg3:#2c5364;
+  --glass:rgba(255,255,255,0.10);--glass-border:rgba(255,255,255,0.20);
+  --text:#f0f9ff;--text-muted:rgba(255,255,255,0.65);
+}
+body{font-family:'Nunito',sans-serif;background:linear-gradient(135deg,var(--bg1),var(--bg2),var(--bg3));min-height:100vh;color:var(--text);overflow-x:hidden;}
+.glass{background:var(--glass);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid var(--glass-border);border-radius:24px;box-shadow:0 8px 40px rgba(0,0,0,0.3);}
+
+/* ── LANDING ── */
+#landing{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;text-align:center;position:relative;overflow:hidden;}
+#landing::before{content:'🎾';font-size:600px;position:absolute;top:-120px;left:50%;transform:translateX(-50%);opacity:0.04;pointer-events:none;user-select:none;animation:spin 60s linear infinite;}
+@keyframes spin{from{transform:translateX(-50%) rotate(0deg);}to{transform:translateX(-50%) rotate(360deg);}}
+.hero-badge{background:linear-gradient(90deg,var(--green),var(--blue));color:#000;font-weight:800;font-size:0.85rem;padding:6px 18px;border-radius:50px;display:inline-block;margin-bottom:20px;animation:pulse 2s ease-in-out infinite;}
+@keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.04);}}
+h1.hero-title{font-family:'Baloo 2',sans-serif;font-size:clamp(2.8rem,7vw,5.5rem);font-weight:800;line-height:1.1;margin-bottom:18px;background:linear-gradient(135deg,#fff 0%,var(--green) 50%,var(--yellow) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hero-sub{font-size:1.2rem;color:var(--text-muted);max-width:580px;margin:0 auto 36px;line-height:1.7;}
+.btn-hero{font-family:'Baloo 2',sans-serif;font-size:1.15rem;font-weight:700;padding:16px 42px;border-radius:50px;border:none;cursor:pointer;background:linear-gradient(135deg,var(--green),#22c55e);color:#000;box-shadow:0 6px 30px rgba(74,222,128,0.4);transition:all 0.25s;display:inline-flex;align-items:center;gap:8px;}
+.btn-hero:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(74,222,128,0.55);}
+.features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;max-width:1100px;margin:60px auto 0;padding:0 20px;}
+.feat-card{padding:26px 22px;border-radius:20px;transition:transform 0.25s;cursor:default;animation:fadeUp 0.6s ease both;}
+.feat-card:hover{transform:translateY(-6px);}
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:translateY(0);}}
+.feat-icon{font-size:2.4rem;margin-bottom:12px;display:block;}
+.feat-card h3{font-family:'Baloo 2',sans-serif;font-size:1.05rem;font-weight:700;margin-bottom:8px;}
+.feat-card p{font-size:0.88rem;color:var(--text-muted);line-height:1.55;}
+.scroll-cta{margin-top:50px;font-size:0.9rem;color:var(--text-muted);animation:bounce 2s infinite;}
+@keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(6px);}}
+
+/* ── APP SECTION ── */
+#app-section{display:none;padding:30px 20px 60px;max-width:1300px;margin:0 auto;}
+.app-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;margin-bottom:28px;padding:20px 28px;}
+.app-header h2{font-family:'Baloo 2',sans-serif;font-size:1.8rem;font-weight:800;}
+.btn-back{background:rgba(255,255,255,0.15);border:1px solid var(--glass-border);color:#fff;padding:8px 20px;border-radius:50px;cursor:pointer;font-family:'Nunito',sans-serif;font-weight:700;font-size:0.9rem;transition:all 0.2s;}
+.btn-back:hover{background:rgba(255,255,255,0.25);}
+
+/* ── MODE PICKER ── */
+.mode-picker{display:flex;gap:14px;margin-bottom:28px;flex-wrap:wrap;}
+.mode-btn{
+  flex:1;min-width:180px;padding:22px 18px;border-radius:20px;border:2px solid var(--glass-border);
+  background:rgba(255,255,255,0.05);cursor:pointer;text-align:center;transition:all 0.25s;
+  font-family:'Baloo 2',sans-serif;color:var(--text);
+}
+.mode-btn:hover{border-color:var(--green);background:rgba(74,222,128,0.08);}
+.mode-btn.active{border-color:var(--green);background:rgba(74,222,128,0.15);box-shadow:0 0 20px rgba(74,222,128,0.2);}
+.mode-btn .mode-icon{font-size:2.2rem;display:block;margin-bottom:8px;}
+.mode-btn .mode-title{font-size:1rem;font-weight:800;display:block;margin-bottom:4px;}
+.mode-btn .mode-desc{font-size:0.78rem;color:var(--text-muted);}
+
+/* ── UPLOAD ZONE ── */
+.upload-zone{border:2px dashed var(--glass-border);border-radius:20px;padding:48px 24px;text-align:center;transition:all 0.3s;cursor:pointer;margin-bottom:28px;background:rgba(255,255,255,0.05);}
+.upload-zone:hover,.upload-zone.drag-over{border-color:var(--green);background:rgba(74,222,128,0.08);}
+.upload-zone .upload-icon{font-size:3.5rem;display:block;margin-bottom:12px;animation:float 3s ease-in-out infinite;}
+@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+.upload-zone h3{font-family:'Baloo 2',sans-serif;font-size:1.3rem;margin-bottom:8px;}
+.upload-zone p{color:var(--text-muted);font-size:0.9rem;margin-bottom:18px;}
+.upload-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+.btn-upload{padding:11px 26px;border-radius:50px;border:none;font-family:'Baloo 2',sans-serif;font-weight:700;font-size:0.95rem;cursor:pointer;transition:all 0.2s;display:inline-flex;align-items:center;gap:7px;}
+.btn-video{background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;box-shadow:0 4px 20px rgba(99,102,241,0.4);}
+.btn-image{background:linear-gradient(135deg,#f59e0b,#ef4444);color:#fff;box-shadow:0 4px 20px rgba(245,158,11,0.4);}
+.btn-upload:hover{transform:translateY(-2px);filter:brightness(1.1);}
+
+/* ── MAIN GRID ── */
+.main-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-bottom:22px;}
+@media(max-width:900px){.main-grid{grid-template-columns:1fr;}}
+.media-panel{padding:20px;}
+.media-label{font-family:'Baloo 2',sans-serif;font-size:1rem;font-weight:700;margin-bottom:12px;color:var(--text-muted);}
+.media-wrapper{position:relative;border-radius:14px;overflow:hidden;background:#000;min-height:300px;display:flex;align-items:center;justify-content:center;}
+.media-wrapper video,.media-wrapper img{width:100%;display:block;max-height:440px;object-fit:contain;}
+.media-placeholder{color:var(--text-muted);text-align:center;padding:40px;}
+.media-placeholder span{font-size:3rem;display:block;margin-bottom:10px;}
+.analysis-panel{padding:22px;display:flex;flex-direction:column;gap:18px;}
+.score-section{display:flex;align-items:center;gap:22px;flex-wrap:wrap;}
+.score-ring{position:relative;width:120px;height:120px;flex-shrink:0;}
+.score-ring svg{transform:rotate(-90deg);}
+.score-ring .score-num{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Baloo 2',sans-serif;font-size:2rem;font-weight:800;}
+.score-details{flex:1;}
+.score-details .shot-badge{display:inline-block;padding:5px 16px;border-radius:50px;font-family:'Baloo 2',sans-serif;font-weight:800;font-size:1rem;margin-bottom:8px;}
+.score-details .stats{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px;}
+.stat-pill{background:rgba(255,255,255,0.12);border-radius:50px;padding:5px 14px;font-size:0.82rem;font-weight:700;display:flex;align-items:center;gap:5px;}
+.angle-compare{padding:14px;border-radius:14px;background:rgba(255,255,255,0.07);}
+.angle-compare h4{font-family:'Baloo 2',sans-serif;font-size:0.95rem;margin-bottom:10px;}
+.angle-bar{display:flex;align-items:center;gap:10px;margin-bottom:6px;font-size:0.82rem;}
+.angle-bar-track{flex:1;height:8px;border-radius:99px;background:rgba(255,255,255,0.15);overflow:hidden;}
+.angle-bar-fill{height:100%;border-radius:99px;transition:width 0.4s ease;}
+.bar-ideal{background:var(--green);}
+.bar-actual{background:var(--yellow);}
+.feedback-section h4{font-family:'Baloo 2',sans-serif;font-size:1rem;margin-bottom:10px;}
+.feedback-item{padding:10px 14px;border-radius:12px;margin-bottom:8px;font-size:0.88rem;line-height:1.5;background:rgba(255,255,255,0.07);border-left:3px solid var(--green);}
+.feedback-item.warn{border-left-color:var(--yellow);}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;}
+.tab{padding:8px 20px;border-radius:50px;border:1px solid var(--glass-border);background:transparent;color:var(--text-muted);cursor:pointer;font-family:'Nunito',sans-serif;font-weight:700;font-size:0.88rem;transition:all 0.2s;}
+.tab.active{background:var(--green);color:#000;border-color:var(--green);}
+.tab-panel{display:none;}
+.tab-panel.active{display:block;}
+.keyframes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px;}
+.kf-card{border-radius:14px;overflow:hidden;position:relative;}
+.kf-card img{width:100%;display:block;height:130px;object-fit:cover;}
+.kf-info{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.8));padding:8px 10px;font-size:0.78rem;font-weight:700;}
+.kf-phase{color:var(--yellow);}
+.shots-table{width:100%;border-collapse:collapse;font-size:0.88rem;}
+.shots-table th{text-align:left;padding:10px 12px;color:var(--text-muted);font-weight:700;border-bottom:1px solid var(--glass-border);}
+.shots-table td{padding:10px 12px;border-bottom:1px solid rgba(255,255,255,0.06);}
+.shot-pill{display:inline-block;padding:3px 12px;border-radius:50px;font-size:0.78rem;font-weight:800;}
+.pill-forehand{background:rgba(74,222,128,0.2);color:var(--green);}
+.pill-backhand{background:rgba(96,165,250,0.2);color:var(--blue);}
+.pill-serve{background:rgba(253,224,71,0.2);color:var(--yellow);}
+.progress-chart{padding:20px;}
+.progress-chart h3{font-family:'Baloo 2',sans-serif;font-size:1.1rem;margin-bottom:16px;}
+.prog-bars{display:flex;align-items:flex-end;gap:10px;height:140px;padding-bottom:8px;border-bottom:1px solid var(--glass-border);}
+.prog-bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;}
+.prog-bar{width:100%;border-radius:8px 8px 0 0;transition:height 1.2s cubic-bezier(.34,1.56,.64,1);min-height:4px;}
+.prog-date{font-size:0.72rem;color:var(--text-muted);margin-top:6px;}
+.prog-score{font-size:0.8rem;font-weight:800;}
+.serve-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.serve-metric{padding:14px;border-radius:14px;background:rgba(255,255,255,0.07);text-align:center;}
+.serve-metric .val{font-family:'Baloo 2',sans-serif;font-size:1.8rem;font-weight:800;color:var(--yellow);}
+.serve-metric .lbl{font-size:0.8rem;color:var(--text-muted);margin-top:4px;}
+.checkpoint{display:flex;align-items:flex-start;gap:12px;margin-bottom:12px;}
+.cp-num{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--green),#16a34a);color:#000;font-weight:800;font-size:0.85rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.cp-text{font-size:0.9rem;line-height:1.5;padding-top:4px;}
+.injury-card{padding:12px 16px;border-radius:14px;background:rgba(248,113,113,0.12);border:1px solid rgba(248,113,113,0.3);margin-bottom:10px;}
+.injury-card .ij-title{font-weight:800;color:var(--red);font-size:0.9rem;margin-bottom:4px;}
+.injury-card .ij-sev{font-size:0.78rem;color:var(--text-muted);}
+.footwork-item{padding:10px 14px;border-radius:12px;margin-bottom:8px;font-size:0.88rem;background:rgba(96,165,250,0.1);border-left:3px solid var(--blue);}
+
+/* ── LIVE MODE ── */
+#liveSection{display:none;}
+.live-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-bottom:22px;}
+@media(max-width:900px){.live-grid{grid-template-columns:1fr;}}
+.live-cam-panel{padding:20px;}
+.live-feed-wrap{position:relative;border-radius:14px;overflow:hidden;background:#000;min-height:320px;}
+/* hidden real webcam feed used for capture only */
+#hiddenVideo{position:absolute;top:0;left:0;width:100%;height:100%;opacity:0;pointer-events:none;}
+/* annotated canvas shown to user */
+#liveCanvas{width:100%;display:block;border-radius:14px;}
+.live-badge{
+  position:absolute;top:12px;left:12px;
+  background:rgba(248,113,113,0.9);color:#fff;
+  font-family:'Baloo 2',sans-serif;font-weight:800;font-size:0.8rem;
+  padding:4px 12px;border-radius:50px;display:none;align-items:center;gap:6px;
+}
+.live-badge.show{display:flex;}
+.live-dot{width:8px;height:8px;border-radius:50%;background:#fff;animation:blink 1s infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0.2;}}
+.live-no-pose{
+  position:absolute;top:12px;right:12px;
+  background:rgba(0,0,0,0.6);color:var(--text-muted);
+  font-size:0.78rem;padding:4px 10px;border-radius:50px;display:none;
+}
+.live-no-pose.show{display:block;}
+.live-controls{display:flex;gap:12px;margin-top:14px;flex-wrap:wrap;}
+.btn-live{padding:11px 26px;border-radius:50px;border:none;font-family:'Baloo 2',sans-serif;font-weight:700;font-size:0.95rem;cursor:pointer;transition:all 0.2s;display:inline-flex;align-items:center;gap:7px;}
+.btn-start{background:linear-gradient(135deg,#ef4444,#f97316);color:#fff;box-shadow:0 4px 20px rgba(239,68,68,0.4);}
+.btn-stop{background:rgba(255,255,255,0.15);border:1px solid var(--glass-border);color:#fff;}
+.btn-live:hover{transform:translateY(-2px);filter:brightness(1.1);}
+.btn-live:disabled{opacity:0.4;cursor:not-allowed;transform:none;}
+
+/* Live stats sidebar */
+.live-stats{padding:22px;display:flex;flex-direction:column;gap:16px;}
+.live-stat-header{font-family:'Baloo 2',sans-serif;font-size:1.1rem;font-weight:800;display:flex;align-items:center;gap:8px;}
+.live-fps{font-size:0.75rem;color:var(--text-muted);font-family:'Nunito',sans-serif;font-weight:600;}
+.live-score-row{display:flex;align-items:center;gap:16px;}
+.live-score-big{font-family:'Baloo 2',sans-serif;font-size:3.5rem;font-weight:800;line-height:1;transition:color 0.3s;}
+.live-score-label{font-size:0.8rem;color:var(--text-muted);}
+.live-shot-badge{display:inline-block;padding:6px 18px;border-radius:50px;font-family:'Baloo 2',sans-serif;font-weight:800;font-size:1.05rem;margin-bottom:4px;transition:all 0.3s;}
+.live-conf{font-size:0.82rem;color:var(--text-muted);}
+.live-angle-section{padding:12px;border-radius:14px;background:rgba(255,255,255,0.07);}
+.live-angle-section h4{font-family:'Baloo 2',sans-serif;font-size:0.9rem;margin-bottom:10px;}
+.live-feedback{display:flex;flex-direction:column;gap:8px;}
+.live-fb-item{padding:9px 13px;border-radius:11px;font-size:0.85rem;background:rgba(255,255,255,0.07);border-left:3px solid var(--green);transition:all 0.3s;}
+.live-fb-item.warn{border-left-color:var(--yellow);}
+.live-injury-alert{padding:10px 14px;border-radius:12px;background:rgba(248,113,113,0.15);border:1px solid rgba(248,113,113,0.4);font-size:0.85rem;color:var(--red);font-weight:700;display:none;}
+.live-injury-alert.show{display:block;}
+.live-session{padding:14px;border-radius:14px;background:rgba(255,255,255,0.07);}
+.live-session h4{font-family:'Baloo 2',sans-serif;font-size:0.9rem;margin-bottom:10px;}
+.session-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.sess-stat{text-align:center;padding:10px;border-radius:10px;background:rgba(255,255,255,0.06);}
+.sess-val{font-family:'Baloo 2',sans-serif;font-size:1.4rem;font-weight:800;color:var(--green);}
+.sess-lbl{font-size:0.72rem;color:var(--text-muted);}
+.live-idle{text-align:center;padding:40px 20px;color:var(--text-muted);}
+.live-idle span{font-size:3rem;display:block;margin-bottom:12px;}
+.live-idle p{font-size:0.9rem;}
+
+/* ── LOADER ── */
+#loader{display:none;position:fixed;inset:0;z-index:999;background:rgba(15,32,39,0.75);backdrop-filter:blur(8px);flex-direction:column;align-items:center;justify-content:center;gap:16px;}
+#loader.show{display:flex;}
+.loader-ball{width:60px;height:60px;border-radius:50%;border:5px solid rgba(255,255,255,0.15);border-top-color:var(--green);animation:spin2 0.8s linear infinite;}
+@keyframes spin2{to{transform:rotate(360deg);}}
+.loader-text{font-family:'Baloo 2',sans-serif;font-size:1.1rem;font-weight:700;color:var(--text-muted);}
+
+@media(max-width:600px){.score-section{flex-direction:column;align-items:flex-start;}.serve-grid{grid-template-columns:1fr;}.features-grid{grid-template-columns:1fr;}.live-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<!-- ████ LANDING ████ -->
+<section id="landing">
+  <div class="hero-badge">✨ AI-Powered Tennis Coach</div>
+  <h1 class="hero-title">CourtVision AI Pro 🎾</h1>
+  <p class="hero-sub">Upload your swing video or photo — or use your webcam for live real-time coaching — and get instant AI analysis, pose tracking, and personalised tips!</p>
+  <button class="btn-hero" onclick="goToApp()">🚀 Start Analysing My Swing</button>
+  <div class="features-grid">
+    <div class="feat-card glass" style="animation-delay:0.05s"><span class="feat-icon">📹</span><h3>Live Camera Mode</h3><p>Point your webcam at yourself swinging and get real-time skeleton overlay, shot classification, and live coaching feedback — no upload needed!</p></div>
+    <div class="feat-card glass" style="animation-delay:0.1s"><span class="feat-icon">🦴</span><h3>Pose Detection Overlay</h3><p>Skeleton & joint tracking drawn on top of your video — see exactly where your body is at every moment.</p></div>
+    <div class="feat-card glass" style="animation-delay:0.15s"><span class="feat-icon">🎯</span><h3>Stroke Classification</h3><p>AI automatically detects your shot type — forehand, backhand, serve, slice, or volley.</p></div>
+    <div class="feat-card glass" style="animation-delay:0.2s"><span class="feat-icon">📊</span><h3>Form Scoring (0–100)</h3><p>Instant form score based on joint angles and biomechanics compared to ideal technique.</p></div>
+    <div class="feat-card glass" style="animation-delay:0.25s"><span class="feat-icon">💬</span><h3>Specific Feedback</h3><p>"Elbow too low at contact," "weight not transferring" — detailed callouts from a built-in mistake library.</p></div>
+    <div class="feat-card glass" style="animation-delay:0.3s"><span class="feat-icon">⚠️</span><h3>Injury Risk Flagging</h3><p>Highlights movements known to strain shoulders, elbows, and knees — keep your body safe.</p></div>
+    <div class="feat-card glass" style="animation-delay:0.35s"><span class="feat-icon">🎞️</span><h3>Frame-by-Frame Breakdown</h3><p>Key checkpoints at prep, contact, and follow-through — with annotated skeleton frames.</p></div>
+    <div class="feat-card glass" style="animation-delay:0.4s"><span class="feat-icon">📈</span><h3>Progress Tracking</h3><p>See your form score improve across multiple sessions — track your journey to pro level.</p></div>
+    <div class="feat-card glass" style="animation-delay:0.45s"><span class="feat-icon">🏆</span><h3>Serve-Specific Breakdown</h3><p>Toss consistency, knee bend, contact height, and follow-through — deep dive into your serve.</p></div>
+  </div>
+  <div class="scroll-cta" style="margin-top:40px;">👇 Ready? Hit the button above!</div>
+</section>
+
+<!-- ████ APP SECTION ████ -->
+<section id="app-section">
+  <div class="app-header glass">
+    <h2>🎾 CourtVision AI Pro</h2>
+    <button class="btn-back" onclick="goToLanding()">← Back to Home</button>
+  </div>
+
+  <!-- MODE PICKER -->
+  <div class="mode-picker">
+    <button class="mode-btn glass active" id="modeUpload" onclick="setMode('upload')">
+      <span class="mode-icon">📤</span>
+      <span class="mode-title">Upload Video / Image</span>
+      <span class="mode-desc">Analyse a recorded swing file</span>
+    </button>
+    <button class="mode-btn glass" id="modeLive" onclick="setMode('live')">
+      <span class="mode-icon">📹</span>
+      <span class="mode-title">Live Camera</span>
+      <span class="mode-desc">Real-time webcam analysis</span>
+    </button>
+  </div>
+
+  <!-- ── UPLOAD MODE ── -->
+  <div id="uploadSection">
+    <div class="upload-zone glass" id="uploadZone"
+      ondrop="handleDrop(event)" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)">
+      <span class="upload-icon">📤</span>
+      <h3>Drop your video or image here!</h3>
+      <p>Supports MP4, MOV, AVI, JPG, PNG — max 100MB</p>
+      <div class="upload-btns">
+        <button class="btn-upload btn-video" onclick="document.getElementById('videoInput').click()">🎥 Upload Video</button>
+        <button class="btn-upload btn-image" onclick="document.getElementById('imageInput').click()">📸 Upload Image</button>
+      </div>
+    </div>
+    <input type="file" id="videoInput" accept="video/*" style="display:none" onchange="handleFile(event,'video')">
+    <input type="file" id="imageInput" accept="image/*" style="display:none" onchange="handleFile(event,'image')">
+
+    <div id="results" style="display:none;">
+      <div class="main-grid">
+        <div class="glass media-panel">
+          <div class="media-label">📹 Your Swing</div>
+          <div class="media-wrapper" id="mediaWrapper">
+            <div class="media-placeholder"><span>🎾</span>Your media appears here</div>
+          </div>
+          <div id="skeletonWrap" style="display:none;margin-top:14px;">
+            <div class="media-label">🦴 Pose Skeleton Overlay</div>
+            <div class="media-wrapper"><img id="skeletonImg" alt="Pose skeleton" style="max-height:300px;"></div>
+          </div>
+        </div>
+        <div class="glass analysis-panel">
+          <div class="score-section">
+            <div class="score-ring">
+              <svg width="120" height="120" viewBox="0 0 120 120">
+                <circle cx="60" cy="60" r="50" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="10"/>
+                <circle id="scoreCircle" cx="60" cy="60" r="50" fill="none" stroke="#4ade80" stroke-width="10"
+                  stroke-dasharray="314" stroke-dashoffset="314" stroke-linecap="round" style="transition:stroke-dashoffset 1.2s ease;"/>
+              </svg>
+              <div class="score-num" id="scoreNum">--</div>
+            </div>
+            <div class="score-details">
+              <div class="shot-badge" id="shotBadge">Analysing...</div>
+              <div style="color:var(--text-muted);font-size:0.85rem;margin-bottom:6px;" id="confText"></div>
+              <div class="stats">
+                <div class="stat-pill">🔄 <span id="spinText">-</span></div>
+                <div class="stat-pill">⚡ <span id="speedText">-</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="angle-compare">
+            <h4>📐 Elbow Angle Comparison</h4>
+            <div class="angle-bar">
+              <span style="width:70px;color:var(--green);font-size:0.8rem;">Ideal</span>
+              <div class="angle-bar-track"><div class="angle-bar-fill bar-ideal" id="barIdeal" style="width:0%"></div></div>
+              <span id="idealAngleVal" style="font-size:0.8rem;font-weight:800;width:40px;text-align:right;">--°</span>
+            </div>
+            <div class="angle-bar">
+              <span style="width:70px;color:var(--yellow);font-size:0.8rem;">Yours</span>
+              <div class="angle-bar-track"><div class="angle-bar-fill bar-actual" id="barActual" style="width:0%"></div></div>
+              <span id="actualAngleVal" style="font-size:0.8rem;font-weight:800;width:40px;text-align:right;">--°</span>
+            </div>
+          </div>
+          <div class="feedback-section">
+            <h4>💡 Coach Feedback</h4>
+            <div id="feedbackList"></div>
+          </div>
+          <div id="injurySection" style="display:none;">
+            <h4 style="color:var(--red);margin-bottom:10px;font-family:'Baloo 2',sans-serif;">⚠️ Injury Risk Alerts</h4>
+            <div id="injuryList"></div>
+          </div>
+        </div>
+      </div>
+      <div class="glass" style="padding:24px;">
+        <div class="tabs">
+          <button class="tab active" onclick="switchTab('keyframes',event)">🎞️ Key Frames</button>
+          <button class="tab" onclick="switchTab('shots',event)">📋 Shot Log</button>
+          <button class="tab" onclick="switchTab('checkpoints',event)">✅ Checkpoints</button>
+          <button class="tab" onclick="switchTab('footwork',event)">🦶 Footwork</button>
+          <button class="tab" onclick="switchTab('serve',event)" id="serveTab" style="display:none;">🏆 Serve</button>
+          <button class="tab" onclick="switchTab('progress',event)">📈 Progress</button>
+        </div>
+        <div class="tab-panel active" id="tab-keyframes">
+          <div class="keyframes-grid" id="keyframesGrid"><div style="color:var(--text-muted);font-size:0.9rem;padding:20px;">Key frames appear after video analysis.</div></div>
+        </div>
+        <div class="tab-panel" id="tab-shots">
+          <table class="shots-table">
+            <thead><tr><th>#</th><th>Shot</th><th>Spin</th><th>Speed</th><th>Time</th><th>Confidence</th></tr></thead>
+            <tbody id="shotsBody"><tr><td colspan="6" style="color:var(--text-muted);padding:20px;">Shot log appears after video analysis.</td></tr></tbody>
+          </table>
+        </div>
+        <div class="tab-panel" id="tab-checkpoints"><div id="checkpointsList" style="max-width:600px;"></div></div>
+        <div class="tab-panel" id="tab-footwork"><div id="footworkList"></div></div>
+        <div class="tab-panel" id="tab-serve"><div class="serve-grid" id="serveGrid"></div></div>
+        <div class="tab-panel" id="tab-progress">
+          <div class="progress-chart">
+            <h3>📈 Your Form Score Over Time</h3>
+            <div class="prog-bars" id="progBars"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── LIVE MODE ── -->
+  <div id="liveSection">
+    <div class="live-grid">
+      <!-- Camera feed -->
+      <div class="glass live-cam-panel">
+        <div class="media-label">📹 Live Camera Feed</div>
+        <div class="live-feed-wrap">
+          <video id="hiddenVideo" autoplay playsinline muted></video>
+          <canvas id="liveCanvas"></canvas>
+          <div class="live-badge" id="liveBadge"><div class="live-dot"></div>LIVE</div>
+          <div class="live-no-pose" id="noPoseMsg">No pose detected</div>
+        </div>
+        <div class="live-controls">
+          <button class="btn-live btn-start" id="btnStart" onclick="startLive()">🎥 Start Live Analysis</button>
+          <button class="btn-live btn-stop" id="btnStop" onclick="stopLive()" disabled>⏹ Stop</button>
+        </div>
+        <div style="margin-top:10px;font-size:0.8rem;color:var(--text-muted);padding:0 4px;">
+          💡 Tip: Stand 2–3 metres from your camera so your full body is visible. Hold a racket and perform your swing!
+        </div>
+      </div>
+
+      <!-- Live stats -->
+      <div class="glass live-stats">
+        <div id="liveIdle" class="live-idle">
+          <span>📹</span>
+          <p>Hit <strong>Start Live Analysis</strong> to begin real-time coaching. Your browser will ask for camera permission — click Allow!</p>
+        </div>
+        <div id="liveActiveStats" style="display:none;">
+          <div class="live-stat-header">
+            🤖 Live Analysis
+            <span class="live-fps" id="liveFps"></span>
+          </div>
+          <div class="live-score-row">
+            <div>
+              <div class="live-score-big" id="liveScore">--</div>
+              <div class="live-score-label">Form Score</div>
+            </div>
+            <div>
+              <div class="live-shot-badge" id="liveShotBadge">Detecting...</div>
+              <div class="live-conf" id="liveConf"></div>
+            </div>
+          </div>
+          <div class="live-angle-section">
+            <h4>📐 Elbow Angle</h4>
+            <div class="angle-bar">
+              <span style="width:60px;color:var(--green);font-size:0.78rem;">Ideal</span>
+              <div class="angle-bar-track"><div class="angle-bar-fill bar-ideal" id="liveBarIdeal" style="width:0%"></div></div>
+              <span id="liveIdealVal" style="font-size:0.78rem;font-weight:800;width:38px;text-align:right;">--°</span>
+            </div>
+            <div class="angle-bar">
+              <span style="width:60px;color:var(--yellow);font-size:0.78rem;">Yours</span>
+              <div class="angle-bar-track"><div class="angle-bar-fill bar-actual" id="liveBarActual" style="width:0%"></div></div>
+              <span id="liveActualVal" style="font-size:0.78rem;font-weight:800;width:38px;text-align:right;">--°</span>
+            </div>
+          </div>
+          <div class="live-feedback" id="liveFeedback">
+            <div class="live-fb-item">Waiting for pose...</div>
+          </div>
+          <div class="live-injury-alert" id="liveInjuryAlert"></div>
+          <div class="live-session">
+            <h4>📊 Session Stats</h4>
+            <div class="session-stats">
+              <div class="sess-stat"><div class="sess-val" id="sessFrames">0</div><div class="sess-lbl">Frames Analysed</div></div>
+              <div class="sess-stat"><div class="sess-val" id="sessBestScore">--</div><div class="sess-lbl">Best Score</div></div>
+              <div class="sess-stat"><div class="sess-val" id="sessAvgScore">--</div><div class="sess-lbl">Avg Score</div></div>
+              <div class="sess-stat"><div class="sess-val" id="sessDominant">--</div><div class="sess-lbl">Top Shot</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Loader -->
+<div id="loader"><div class="loader-ball"></div><div class="loader-text" id="loaderText">Analysing your swing...</div></div>
+
+<script>
+const API = 'http://127.0.0.1:5000';
+
+// ── NAV ──────────────────────────────────────────────────────────────────────
+function goToApp(){ document.getElementById('landing').style.display='none'; document.getElementById('app-section').style.display='block'; }
+function goToLanding(){ stopLive(); document.getElementById('landing').style.display='flex'; document.getElementById('app-section').style.display='none'; }
+
+function setMode(mode){
+  document.getElementById('modeUpload').classList.toggle('active', mode==='upload');
+  document.getElementById('modeLive').classList.toggle('active', mode==='live');
+  document.getElementById('uploadSection').style.display = mode==='upload' ? 'block' : 'none';
+  document.getElementById('liveSection').style.display = mode==='live' ? 'block' : 'none';
+  if(mode !== 'live') stopLive();
+}
+
+// ── UPLOAD MODE ──────────────────────────────────────────────────────────────
+function handleDragOver(e){ e.preventDefault(); document.getElementById('uploadZone').classList.add('drag-over'); }
+function handleDragLeave(){ document.getElementById('uploadZone').classList.remove('drag-over'); }
+function handleDrop(e){
+  e.preventDefault(); document.getElementById('uploadZone').classList.remove('drag-over');
+  const file = e.dataTransfer.files[0]; if(!file) return;
+  processFile(file, file.type.startsWith('video') ? 'video' : 'image');
+}
+function handleFile(event, type){ const file = event.target.files[0]; if(file) processFile(file, type); }
+
+async function processFile(file, type){
+  const wrapper = document.getElementById('mediaWrapper');
+  wrapper.innerHTML = '';
+  const el = document.createElement(type === 'video' ? 'video' : 'img');
+  el.src = URL.createObjectURL(file);
+  if(type === 'video'){ el.controls = true; el.playsinline = true; }
+  wrapper.appendChild(el);
+  document.getElementById('results').style.display = 'block';
+  document.getElementById('skeletonWrap').style.display = 'none';
+  const loader = document.getElementById('loader');
+  loader.classList.add('show');
+  const msgs = ['🔍 Detecting pose landmarks...','🤖 Classifying stroke type...','📐 Measuring joint angles...','💡 Generating coaching tips...'];
+  let mi = 0;
+  const lt = document.getElementById('loaderText');
+  lt.textContent = msgs[0];
+  const interval = setInterval(()=>{ mi=(mi+1)%msgs.length; lt.textContent=msgs[mi]; }, 1400);
+  try {
+    const fd = new FormData(); fd.append('file', file);
+    const upRes = await fetch(`${API}/api/upload`,{method:'POST',body:fd});
+    const upData = await upRes.json();
+    if(!upData.success) throw new Error(upData.error || 'Upload failed');
+    const anRes = await fetch(`${API}/api/analyze`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type,filepath:upData.filepath})});
+    const data = await anRes.json();
+    clearInterval(interval); loader.classList.remove('show');
+    if(data.success) renderResults(data);
+    else alert('Analysis failed: ' + (data.error || 'Unknown error'));
+  } catch(err){
+    clearInterval(interval); loader.classList.remove('show');
+    alert('Could not connect to server. Make sure app.py is running on port 5000.\n\n' + err.message);
+  }
+}
+
+function renderResults(data){
+  const score = data.form_score || 80;
+  document.getElementById('scoreNum').textContent = score;
+  document.getElementById('scoreCircle').style.strokeDashoffset = 314 - (314 * score / 100);
+  document.getElementById('scoreCircle').setAttribute('stroke', score>=80?'#4ade80':score>=60?'#fde047':'#f87171');
+  const shot = data.shot_type || 'Forehand';
+  const badgeEl = document.getElementById('shotBadge');
+  badgeEl.textContent = `🎾 ${shot}`;
+  badgeEl.style.background = shot==='Forehand'?'rgba(74,222,128,0.25)':shot==='Backhand'?'rgba(96,165,250,0.25)':'rgba(253,224,71,0.25)';
+  badgeEl.style.color = shot==='Forehand'?'#4ade80':shot==='Backhand'?'#60a5fa':'#fde047';
+  document.getElementById('confText').textContent = data.confidence ? `Confidence: ${data.confidence}%` : '';
+  document.getElementById('spinText').textContent = data.spin_type || '-';
+  document.getElementById('speedText').textContent = data.ball_speed_kmh ? `${data.ball_speed_kmh} km/h` : 'Image mode';
+  if(data.ideal_angles){
+    const ia = data.ideal_angles;
+    document.getElementById('idealAngleVal').textContent = ia.elbow+'°';
+    document.getElementById('actualAngleVal').textContent = ia.actual_elbow+'°';
+    document.getElementById('barIdeal').style.width = Math.min(100,ia.elbow/1.8)+'%';
+    document.getElementById('barActual').style.width = Math.min(100,ia.actual_elbow/1.8)+'%';
+  }
+  document.getElementById('feedbackList').innerHTML = (data.feedback||[]).map(f=>`<div class="feedback-item ${f.includes('⚠️')?'warn':''}">${f}</div>`).join('');
+  const injSec = document.getElementById('injurySection');
+  if(data.injury_risks && data.injury_risks.length>0){
+    injSec.style.display='block';
+    document.getElementById('injuryList').innerHTML = data.injury_risks.map(r=>`<div class="injury-card"><div class="ij-title">🚨 ${r.message}</div><div class="ij-sev">Severity: ${r.severity}</div></div>`).join('');
+  } else { injSec.style.display='none'; }
+  if(data.skeleton_image){ document.getElementById('skeletonWrap').style.display='block'; document.getElementById('skeletonImg').src='data:image/jpeg;base64,'+data.skeleton_image; }
+  const kfGrid = document.getElementById('keyframesGrid');
+  kfGrid.innerHTML = (data.key_frames&&data.key_frames.length>0)
+    ? data.key_frames.map(kf=>`<div class="kf-card glass"><img src="data:image/jpeg;base64,${kf.image}" alt="Frame"><div class="kf-info"><div class="kf-phase">${kf.phase}</div><div style="font-size:0.75rem;color:rgba(255,255,255,0.7)">${kf.timestamp}s · ${kf.shot} · ${kf.elbow_angle}°</div></div></div>`).join('')
+    : '<div style="color:var(--text-muted);font-size:0.9rem;padding:20px;">Key frames from video analysis appear here.</div>';
+  const shotsBody = document.getElementById('shotsBody');
+  shotsBody.innerHTML = (data.all_shots&&data.all_shots.length>0)
+    ? data.all_shots.map((s,i)=>`<tr><td>${i+1}</td><td><span class="shot-pill ${s.shot==='Forehand'?'pill-forehand':s.shot==='Backhand'?'pill-backhand':'pill-serve'}">${s.shot}</span></td><td>${s.spin||'-'}</td><td>${s.speed?s.speed+' km/h':'-'}</td><td>${s.startTime}s</td><td>${s.confidence||'-'}%</td></tr>`).join('')
+    : '<tr><td colspan="6" style="color:var(--text-muted);padding:20px;">Shot log from video appears here.</td></tr>';
+  document.getElementById('checkpointsList').innerHTML = (data.checkpoints||[]).map((cp,i)=>`<div class="checkpoint"><div class="cp-num">${i+1}</div><div class="cp-text">${cp}</div></div>`).join('') || '<p style="color:var(--text-muted)">Upload for detailed checkpoints.</p>';
+  document.getElementById('footworkList').innerHTML = (data.footwork_tips||['Upload a video for footwork analysis.']).map(t=>`<div class="footwork-item">${t}</div>`).join('');
+  if(data.serve_breakdown){
+    document.getElementById('serveTab').style.display='block';
+    const sb=data.serve_breakdown;
+    document.getElementById('serveGrid').innerHTML=`<div class="serve-metric glass"><div class="val">${sb.toss_consistency}%</div><div class="lbl">Toss Consistency</div></div><div class="serve-metric glass"><div class="val">${sb.knee_bend_score}%</div><div class="lbl">Knee Bend Score</div></div><div class="serve-metric glass"><div class="val" style="font-size:1.2rem">${sb.contact_height}</div><div class="lbl">Contact Height</div></div><div class="serve-metric glass"><div class="val" style="font-size:1.2rem">${sb.follow_through}</div><div class="lbl">Follow-Through</div></div>`;
+  }
+  loadProgress();
+}
+
+async function loadProgress(){
+  try {
+    const res = await fetch(`${API}/api/progress`);
+    const data = await res.json();
+    if(!data.success) return;
+    const maxScore = Math.max(...data.history.map(h=>h.score),100);
+    document.getElementById('progBars').innerHTML = data.history.map(h=>{
+      const pct=(h.score/maxScore*100);
+      const col=h.score>=80?'#4ade80':h.score>=65?'#fde047':'#f87171';
+      return `<div class="prog-bar-wrap"><div class="prog-score">${h.score}</div><div class="prog-bar" style="height:${pct}%;background:linear-gradient(180deg,${col},${col}88);"></div><div class="prog-date">${h.date}</div></div>`;
+    }).join('');
+  } catch(e){}
+}
+
+function switchTab(name, e){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  if(e && e.target) e.target.classList.add('active');
+}
+
+// ── LIVE MODE ────────────────────────────────────────────────────────────────
+let liveStream = null;
+let liveInterval = null;
+let sessionFrames = 0, sessionScores = [], sessionShots = {};
+let lastFrameTime = Date.now();
+
+async function startLive(){
+  try {
+    liveStream = await navigator.mediaDevices.getUserMedia({video:{width:{ideal:640},height:{ideal:480}}, audio:false});
+  } catch(err){
+    alert('Camera access denied or unavailable.\n\nPlease allow camera access in your browser and try again.\n\n' + err.message);
+    return;
+  }
+  const video = document.getElementById('hiddenVideo');
+  video.srcObject = liveStream;
+  await video.play();
+
+  // Size canvas to match video
+  video.onloadedmetadata = () => {
+    const canvas = document.getElementById('liveCanvas');
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+  };
+
+  document.getElementById('btnStart').disabled = true;
+  document.getElementById('btnStop').disabled = false;
+  document.getElementById('liveBadge').classList.add('show');
+  document.getElementById('liveIdle').style.display = 'none';
+  document.getElementById('liveActiveStats').style.display = 'block';
+
+  // Reset session
+  sessionFrames = 0; sessionScores = []; sessionShots = {};
+  updateSessionStats();
+
+  // Send a frame every 500ms
+  liveInterval = setInterval(sendLiveFrame, 500);
+}
+
+function stopLive(){
+  if(liveInterval){ clearInterval(liveInterval); liveInterval = null; }
+  if(liveStream){ liveStream.getTracks().forEach(t=>t.stop()); liveStream = null; }
+  document.getElementById('btnStart').disabled = false;
+  document.getElementById('btnStop').disabled = true;
+  document.getElementById('liveBadge').classList.remove('show');
+  document.getElementById('noPoseMsg').classList.remove('show');
+}
+
+async function sendLiveFrame(){
+  const video = document.getElementById('hiddenVideo');
+  const canvas = document.getElementById('liveCanvas');
+  if(!video.videoWidth) return;
+
+  // Draw current webcam frame to canvas (so user sees video while waiting)
+  const ctx = canvas.getContext('2d');
+  ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+  // Capture frame as base64 JPEG (lower quality = faster)
+  const b64 = canvas.toDataURL('image/jpeg', 0.6).split(',')[1];
+
+  try {
+    const res = await fetch(`${API}/api/live_frame`, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({frame: b64})
+    });
+    const data = await res.json();
+
+    // FPS
+    const now = Date.now();
+    const fps = Math.round(1000 / (now - lastFrameTime));
+    lastFrameTime = now;
+    document.getElementById('liveFps').textContent = `${fps} FPS`;
+
+    if(!data.success) return;
+
+    // Draw annotated frame returned from server
+    if(data.annotated_frame){
+      const img = new Image();
+      img.onload = () => ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      img.src = 'data:image/jpeg;base64,' + data.annotated_frame;
+    }
+
+    if(!data.pose_detected){
+      document.getElementById('noPoseMsg').classList.add('show');
+      return;
+    }
+    document.getElementById('noPoseMsg').classList.remove('show');
+
+    // Update live stats
+    const score = data.form_score || 0;
+    const shot = data.shot_type || 'Unknown';
+    const conf = data.confidence || 0;
+
+    // Score
+    const scoreEl = document.getElementById('liveScore');
+    scoreEl.textContent = score;
+    scoreEl.style.color = score>=80?'var(--green)':score>=60?'var(--yellow)':'var(--red)';
+
+    // Shot badge
+    const badge = document.getElementById('liveShotBadge');
+    badge.textContent = `🎾 ${shot}`;
+    badge.style.background = shot==='Forehand'?'rgba(74,222,128,0.25)':shot==='Backhand'?'rgba(96,165,250,0.25)':'rgba(253,224,71,0.25)';
+    badge.style.color = shot==='Forehand'?'#4ade80':shot==='Backhand'?'#60a5fa':'#fde047';
+    document.getElementById('liveConf').textContent = `Confidence: ${conf}%`;
+
+    // Angles
+    const ideal = data.ideal_elbow || 145;
+    const actual = data.elbow_angle || 0;
+    document.getElementById('liveIdealVal').textContent = ideal+'°';
+    document.getElementById('liveActualVal').textContent = actual+'°';
+    document.getElementById('liveBarIdeal').style.width = Math.min(100,ideal/1.8)+'%';
+    document.getElementById('liveBarActual').style.width = Math.min(100,actual/1.8)+'%';
+
+    // Feedback
+    document.getElementById('liveFeedback').innerHTML = (data.feedback||[]).map(f=>
+      `<div class="live-fb-item ${f.includes('⚠️')?'warn':''}">${f}</div>`
+    ).join('');
+
+    // Injury alert
+    const injAlert = document.getElementById('liveInjuryAlert');
+    if(data.injury_risks && data.injury_risks.length>0){
+      injAlert.classList.add('show');
+      injAlert.textContent = '🚨 ' + data.injury_risks[0].message;
+    } else {
+      injAlert.classList.remove('show');
+    }
+
+    // Session tracking
+    sessionFrames++;
+    sessionScores.push(score);
+    sessionShots[shot] = (sessionShots[shot]||0) + 1;
+    updateSessionStats();
+
+  } catch(err){
+    // Server might be temporarily busy — silently skip this frame
+    console.warn('Live frame error:', err.message);
+  }
+}
+
+function updateSessionStats(){
+  document.getElementById('sessFrames').textContent = sessionFrames;
+  if(sessionScores.length > 0){
+    document.getElementById('sessBestScore').textContent = Math.max(...sessionScores);
+    document.getElementById('sessAvgScore').textContent = Math.round(sessionScores.reduce((a,b)=>a+b,0)/sessionScores.length);
+  }
+  const dominant = Object.entries(sessionShots).sort((a,b)=>b[1]-a[1])[0];
+  document.getElementById('sessDominant').textContent = dominant ? dominant[0].slice(0,3) : '--';
+}
+</script>
+</body>
+</html>

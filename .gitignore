@@ -1,0 +1,11 @@
+venv/
+pycache/
+__pycache__/
+*.py[cod]
+.env
+uploads/
+*.npy
+*.pkl
+tennis_dataset_videos/
+KAGGLE_DATASET/
+models/
