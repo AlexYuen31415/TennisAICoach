@@ -578,8 +578,8 @@ async function startLive(){
   sessionFrames = 0; sessionScores = []; sessionShots = {};
   updateSessionStats();
 
-  // Send a frame every 500ms
-  liveInterval = setInterval(sendLiveFrame, 500);
+  // Send a frame roughly every 33ms for ~30 FPS
+  liveInterval = setInterval(sendLiveFrame, 33);
 }
 
 function stopLive(){
