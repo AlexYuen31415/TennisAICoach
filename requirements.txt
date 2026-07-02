@@ -3,7 +3,7 @@ Flask-Cors>=4.0.0
 opencv-python-headless>=4.10.0
 numpy>=1.26.0
 joblib>=1.4.0
-mediapipe>=0.10.0
+mediapipe==0.10.14
 scikit-learn>=1.4.0
 python-dotenv>=1.0.0
 gunicorn>=22.0.0
