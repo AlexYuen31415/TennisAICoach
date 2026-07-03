@@ -422,7 +422,7 @@ h1.hero-title{font-family:'Baloo 2',sans-serif;font-size:clamp(2.8rem,7vw,5.5rem
 <div id="loader"><div class="loader-ball"></div><div class="loader-text" id="loaderText">Analysing your swing...</div></div>
 
 <script>
-const API = 'http://127.0.0.1:5000';
+const API = window.location.origin;
 
 // ── NAV ──────────────────────────────────────────────────────────────────────
 function goToApp(){ document.getElementById('landing').style.display='none'; document.getElementById('app-section').style.display='block'; }
